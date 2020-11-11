@@ -24,7 +24,7 @@ jobs:
         uses: brpaz/hadolint-action@v1.1.0
         with:
           dockerfile: ./Dockerfile
-          ignore-rules: DL3008
+          args: "--ignore DL3008"
 
       - name: Install Docker Buildx
         id: buildx

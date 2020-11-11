@@ -24,7 +24,7 @@ jobs:
         uses: brpaz/hadolint-action@v1.1.0
         with:
           dockerfile: ./Dockerfile
-          args: "--ignore DL3008"
+          args: "--config ./hadloint.yaml"
 
       - name: Install Docker Buildx
         id: buildx
@@ -41,5 +41,5 @@ jobs:
              --push \
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.28 \
-             --platform=linux/arm/v7,linux/arm64 \
+             --platform=linux/arm64 \
              --build-arg VERSION=6.0.34-06c6d23a7b .

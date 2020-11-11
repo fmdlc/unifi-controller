@@ -1,5 +1,5 @@
 # hadolint ignore=DL3008
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 ARG VERSION=6.0.28
 ARG MONGO_PACKAGE=mongodb-org
@@ -7,15 +7,16 @@ ARG MONGO_REPO=repo.mongodb.org
 
 LABEL \
     org.opencontainers.image.vendor="Facu de la Cruz (tty0) <fmdlc.unix@gmail.com>" \
-    org.opencontainers.image.url="https://github.com/fmdlc/unifi-controller-arm" \
+    org.opencontainers.image.url="https://github.com/fmdlc/unifi-controller" \
     org.opencontainers.image.title="UniFi Controller" \
-    org.opencontainers.image.arch="ARM64, ARMv7" \
+    org.opencontainers.image.arch="ARM64" \
     org.opencontainers.image.version=$VERSION \
     org.opencontainers.image.source="https://github.com/goofball222/unifi.git" \
     org.opencontainers.image.licenses="Apache-2.0"
 
 WORKDIR /usr/lib/unifi
 
+ENV BOUND_PRIV=false
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBUG=false
 ENV JVM_EXTRA_OPTS=""
@@ -27,8 +28,9 @@ ENV RUN_CHOWN=true
 ENV RUNAS_UID0=false
 ENV MONGO_PACKAGE=${MONGO_PACKAGE}
 ENV MONGO_REPO=${MONGO_REPO}
-ENV MONGO_MAJOR 4.2
-ENV MONGO_VERSION 4.2.10
+ENV MONGO_MAJOR 4.4
+ENV MONGO_VERSION 4.4.0
+
 COPY src /
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -38,19 +40,27 @@ RUN groupadd -r unifi -g $PGID ; \
       useradd --no-log-init -r -u $PUID -g $PGID unifi ; \
       apt-get -y update ; \
       apt-get -y install --no-install-recommends \
-        binutils curl gosu libcap2 libcap2-bin procps ca-certificates-java openjdk-8-jre-headless gnupg2 && \
+        binutils \
+        curl \
+        gosu \
+        libcap2 \
+        libcap2-bin \
+        procps \
+        ca-certificates-java \
+        openjdk-8-jre-headless \
+        gnupg2 && \
       rm -rf /var/lib/apt/lists/*
 
-
 # We docupled MongoDB connections but we still need the MongoDB client to connect to the Database
-RUN echo "deb http://$MONGO_REPO/apt/ubuntu bionic/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list" && \
+RUN echo "deb http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE}.list" && \
     curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGO_MAJOR}.asc | apt-key add - && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-		  ${MONGO_PACKAGE}=$MONGO_VERSION \
-      ${MONGO_PACKAGE}-shell=$MONGO_VERSION \
-      ${MONGO_PACKAGE}-mongos=$MONGO_VERSION \
-    	${MONGO_PACKAGE}-tools=$MONGO_VERSION && \
+	    ${MONGO_PACKAGE}=$MONGO_VERSION \
+		  ${MONGO_PACKAGE}-server=$MONGO_VERSION \
+		  ${MONGO_PACKAGE}-shell=$MONGO_VERSION \
+		  ${MONGO_PACKAGE}-mongos=$MONGO_VERSION \
+		  ${MONGO_PACKAGE}-tools=$MONGO_VERSION && \
     rm -rf /var/lib/apt/lists/*
 
 # Finally we need tailo install Unifi Controller

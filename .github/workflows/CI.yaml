@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Hadolint Action Dockerfile.debian
+        uses: brpaz/hadolint-action@v1.1.0
+        with:
+          dockerfile: ./Dockerfile
+          ignore-rules: DL3008
+
+      - name: Install Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+
+      - name: hub.docker.com Login
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Build the multi-arch image
+        run: |
+           docker buildx build \
+             --push \
+             -f ./Dockerfile \
+             -t tty0/unifi-controller:6.0.28 \
+             --platform=linux/arm/v7,linux/arm64 \
+             --build-arg VERSION=6.0.34-06c6d23a7b .

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: unifi
+  labels:
+    app: unifi-controller
+    app.kubernetes.io/app: unifi-controller
+    app.kubernetes.io/project: unifi
+  name: unifi-logs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

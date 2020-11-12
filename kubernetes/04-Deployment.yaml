@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: unifi
+  name: unifi-controller
+  labels:
+    app: unifi-controller
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: unifi-controller
+  template:
+    metadata:
+      labels:
+        app: unifi-controller
+        app.kubernetes.io/app: unifi-controller
+        app.kubernetes.io/version: 6.0.28
+        app.kubernetes.io/project: unifi
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: unifi-controller
+          image: tty0/unifi-controller:6.0.28
+          imagePullPolicy: Always
+          env:
+            - name: DEBUG
+              value: "false"
+            - name: JVM_MAX_HEAP_SIZE
+              value: 1024M
+            - name: JVM_INIT_HEAP_SIZE
+              value: 1024M
+            - name: BIND_PRIV
+              value: "false"
+            - name: DB_MONGO_LOCAL
+              value: "false"
+            - name: DB_MONGO_URI
+              value: "mongodb://mongodb.unifi.svc.cluster.local:27017/ace"
+            - name: STATDB_MONGO_URI
+              value: "mongodb://mongodb.unifi.svc.cluster.local:27017/ace_stat"
+            - name: UNIFI_DB_NAME
+              value: "ace"
+            - name: RUN_CHOWN
+              value: "false"
+          volumeMounts:
+            - name: unifi-controller-config
+              mountPath: /usr/lib/unifi/system.properties.default
+              subPath: system.properties.default
+            - name: unifi-controller-logs
+              mountPath: /usr/lib/unifi/logs
+          ports:
+            - containerPort: 6789
+              name: ubnt-6789
+              protocol: TCP
+            - containerPort: 8080
+              name: ubnt-8080
+              protocol: TCP
+            - containerPort: 8443
+              name: ubnt-8443
+              protocol: TCP
+            - containerPort: 3478
+              name: ubnt-3478
+              protocol: UDP
+            - containerPort: 8881
+              name: ubnt-8881
+              protocol: TCP
+            - containerPort: 8882
+              name: ubnt-8882
+              protocol: TCP
+            - containerPort: 10001
+              name: ubnt-10001
+              protocol: UDP
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 120
+          resources:
+            requests:
+              memory: "768Mi"
+              cpu: "0.2"
+            limits:
+              memory: "1500Mi"
+              cpu: "0.5"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: unifi-controller-config
+          configMap:
+            defaultMode: 0666
+            name: unifi-controller-configmap
+        - name: unifi-controller-logs
+          persistentVolumeClaim:
+            claimName: unifi-logs-pvc

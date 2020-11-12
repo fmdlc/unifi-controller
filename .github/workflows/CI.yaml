@@ -35,21 +35,26 @@ jobs:
       - name: hub.docker.com Login
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        
 
       - name: Build the multi-arch image (6.0.28)
+        if: github.ref == 'refs/heads/master'
         run: |
            docker buildx build \
              --push \
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.28 \
+             -t tty0/unifi-controller:stable
              --platform=linux/arm64 \
              --build-arg VERSION=6.0.28 .
 
       - name: Build the multi-arch image (6.0.34)
+        if: github.ref == 'refs/heads/master'
         run: |
            docker buildx build \
              --push \
              -f ./Dockerfile \
-             -t tty0/unifi-controller:6.0.34 \
+             -t tty0/unifi-controller:6.0.34-beta \
+             -t tty0/unifi-controller:latest \
              --platform=linux/arm64 \
              --build-arg VERSION=6.0.34-06c6d23a7b .

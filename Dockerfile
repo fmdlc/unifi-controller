@@ -41,7 +41,6 @@ RUN groupadd -r unifi -g $PGID ; \
       apt-get -y update ; \
       apt-get -y install --no-install-recommends \
         binutils \
-        curl \
         gosu \
         libcap2 \
         libcap2-bin \
@@ -51,18 +50,6 @@ RUN groupadd -r unifi -g $PGID ; \
         openjdk-8-jre-headless \
         gnupg2 && \
       rm -rf /var/lib/apt/lists/*
-
-# We docupled MongoDB connections but we still need the MongoDB client to connect to the Database
-# RUN echo "deb http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE}.list" && \
-#    curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGO_MAJOR}.asc | apt-key add - && \
-#    apt-get update && \
-#    apt-get install -y --no-install-recommends \
-#	    ${MONGO_PACKAGE}=$MONGO_VERSION \
-#		  ${MONGO_PACKAGE}-server=$MONGO_VERSION \
-#		  ${MONGO_PACKAGE}-shell=$MONGO_VERSION \
-#		  ${MONGO_PACKAGE}-mongos=$MONGO_VERSION \
-#		  ${MONGO_PACKAGE}-tools=$MONGO_VERSION && \
-#    rm -rf /var/lib/apt/lists/*
 
 # Finally we need tailo install Unifi Controller
 RUN curl -sSL https://dl.ui.com/unifi/${VERSION}/unifi_sysvinit_all.deb -o /tmp/unifi-${VERSION}.deb  && \

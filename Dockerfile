@@ -41,6 +41,7 @@ RUN groupadd -r unifi -g $PGID ; \
       apt-get -y update ; \
       apt-get -y install --no-install-recommends \
         binutils \
+        curl \
         gosu \
         libcap2 \
         libcap2-bin \

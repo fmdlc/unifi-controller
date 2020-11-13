@@ -27,7 +27,7 @@ spec:
       containers:
         - name: unifi-controller
           image: tty0/unifi-controller:6.0.28
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: DEBUG
               value: "false"

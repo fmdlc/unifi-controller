@@ -12,13 +12,21 @@ data:
   system.properties.default: |+
     ## system.properties
     ##
+
+    # Logging configuration
     debug.device=info
     debug.mgmt=info
     debug.sdn=info
     debug.system=info
 
+    # Log everything to Standard Output
+    unifi.logStdout=true
+
     is_configured_and_restarted=true
     is_default=false
+
+    # Read database configuration from environment
+    unifi.config.readEnv=true
 
     reporter-uuid=<YOUR_REPORTER_UUID>
     uuid=<YOUR_UUID>

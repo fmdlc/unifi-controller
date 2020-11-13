@@ -11,9 +11,14 @@ Normally Unifi Controller runs in Cloud Providers or in the data center using th
 This image, allows you to run Unifi Network Controller in Kubernetes using the **ARM64** architecture. It has been tested **Raspberry-Pi 4B** running Rancher's [K3s](https://k3s.io).
 The main idea before building this image was to execute this with a decoupled MongoDB database, to improve availability, resiliency, and performance.
 
-The image includes the `mongodb` binaries because the Unifi Network Controller software needs it to execute, but the server must be running externally.
+The *Ubuntu 20.10 (Focal)* based image includes the `mongodb` binaries because the Unifi Network Controller software needs it to execute the database connection, but the endpoint must be external.
 Typically Unifi Controller configures two different MongoDB databases, `ace` for the configuration itself and `ace_stats` to store networking metrics.
 You need to create your MongoDB cluster before using this image. A few examples of the Kubernetes configuration have been included in this repository.
+
+## Supported tags and respective Dockerfile links
+
+* [latest](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.34-beta](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
+* [oficial](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.28](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
 
 ## Environment
 

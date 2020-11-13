@@ -38,13 +38,34 @@ You need to have an ARM64 cluster with a MongoDB accessible by the Unifi Control
 ![](./img/diagram.png)
 
 ## Exposes
-* 6789/tcp - No data.
-* 8080/tcp - Device command/control
-* 8443/tcp - Web interface + API
-* 8843/tcp - HTTPS portal
-* 8880/tcp - HTTP portal
-* 8080/tcp - API 
-* 3478/udp - STUN service
+
+The following ports are exposed by Unifi Controller.
+
+Protocol | Port number | Description |
+--- | --- | --- |
+UDP	| 3478	| Port used for STUN.
+UDP	| 5514	| Port used for remote syslog capture.
+TCP	| 8080	| Port used for device and controller communication.
+TCP	| 8443	| Port used for controller GUI/API as seen in a web browser
+TCP	| 8880	| Port used for HTTP portal redirection.
+TCP	| 8843	| Port used for HTTPS portal redirection.
+TCP	| 6789	| Port used for UniFi mobile speed test.
+TCP	| 27117	| Port used for local-bound database communication.
+UDP	| 5656-5699	| Ports used by AP-EDU broadcasting.
+UDP	| 10001	| Port used for device discovery
+
+> ***NOTE:*** These ports need to be open at the gateway/firewall as well as on the controller host. This would be achieved by creating port forwards on the gateway/firewall where the controller host is located.
+
+### Egress Ports Required for UniFi Remote Access
+
+The following ports are required to reach the Unifi Cloud for Remote Access.
+
+Protocol | Port number | Description |
+--- | --- | --- |
+UDP	| 3478 | Port used for STUN.
+TCP/UDP	| 443	| Port used for Remote Access service.
+TCP	| 8883	| Port used for Remote Access service.
+
 
 ## Credits
 Based on [goofball222/unifi](https://github.com/goofball222/unifi) Docker images.

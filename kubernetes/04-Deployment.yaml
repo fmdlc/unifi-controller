@@ -7,12 +7,10 @@ metadata:
   labels:
     app: unifi-controller
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
   selector:
     matchLabels:
       app: unifi-controller
+  replicas: 1
   template:
     metadata:
       labels:
@@ -21,7 +19,10 @@ spec:
         app.kubernetes.io/version: 6.0.28
         app.kubernetes.io/project: unifi
     spec:
-      hostNetwork: true
+      securityContext:
+        runAsUser: 10999
+        runAsGroup: 10999
+      hostNetwork: false
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unifi-controller
@@ -80,12 +81,17 @@ spec:
               port: 8443
               scheme: HTTPS
             initialDelaySeconds: 120
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 30
           resources:
             requests:
-              memory: "768Mi"
+              memory: "512Mi"
               cpu: "0.2"
             limits:
-              memory: "1500Mi"
+              memory: "1024Mi"
               cpu: "0.5"
       restartPolicy: Always
       terminationGracePeriodSeconds: 30

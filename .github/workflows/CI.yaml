@@ -45,7 +45,7 @@ jobs:
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.28 \
              -t tty0/unifi-controller:stable \
-             --platform=linux/arm64 \
+             --platform=linux/arm64,linux/amd64 \
              --build-arg VERSION=6.0.28 .
 
       - name: Build the multi-arch image (6.0.34)
@@ -56,5 +56,5 @@ jobs:
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.34-beta \
              -t tty0/unifi-controller:latest \
-             --platform=linux/arm64 \
+             --platform=linux/arm64,linux/amd64 \
              --build-arg VERSION=6.0.34-06c6d23a7b .

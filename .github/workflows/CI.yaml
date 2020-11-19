@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+      - develop
   workflow_dispatch:
 
 defaults:
@@ -35,7 +36,6 @@ jobs:
       - name: hub.docker.com Login
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        
 
       - name: Build the multi-arch image (6.0.28)
         if: github.ref == 'refs/heads/master'
@@ -58,3 +58,14 @@ jobs:
              -t tty0/unifi-controller:latest \
              --platform=linux/arm64,linux/amd64 \
              --build-arg VERSION=6.0.34-06c6d23a7b .
+
+      - name: Build the multi-arch image (6.0.36)
+        if: github.ref == 'refs/heads/master'
+        run: |
+           docker buildx build \
+             --push \
+             -f ./Dockerfile \
+             -t tty0/unifi-controller:6.0.36-beta \
+             -t tty0/unifi-controller:latest \
+             --platform=linux/arm64,linux/amd64 \
+             --build-arg VERSION=6.0.36

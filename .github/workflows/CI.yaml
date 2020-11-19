@@ -56,7 +56,7 @@ jobs:
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.34 \
              --platform=linux/arm64,linux/amd64 \
-             --build-arg VERSION=6.0.34 .
+             --build-arg VERSION=6.0.34-06c6d23a7b .
 
       - name: Build the multi-arch image (6.0.36)
         if: github.ref == 'refs/heads/master'

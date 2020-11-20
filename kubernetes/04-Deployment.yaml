@@ -16,7 +16,7 @@ spec:
       labels:
         app: unifi-controller
         app.kubernetes.io/app: unifi-controller
-        app.kubernetes.io/version: 6.0.28
+        app.kubernetes.io/version: 6.0.36
         app.kubernetes.io/project: unifi
     spec:
       securityContext:
@@ -26,7 +26,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unifi-controller
-          image: tty0/unifi-controller:6.0.28
+          image: tty0/unifi-controller:6.0.36
           imagePullPolicy: IfNotPresent
           env:
             - name: DEBUG

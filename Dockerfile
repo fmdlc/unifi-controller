@@ -1,7 +1,7 @@
 # hadolint ignore=DL3008
 FROM ubuntu:focal
 
-ARG VERSION=6.0.28
+ARG VERSION=6.0.45
 ARG MONGO_PACKAGE=mongodb-org
 ARG MONGO_REPO=repo.mongodb.org
 

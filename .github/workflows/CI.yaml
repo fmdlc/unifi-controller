@@ -85,6 +85,17 @@ jobs:
              --push \
              -f ./Dockerfile \
              -t tty0/unifi-controller:6.0.45 \
-             -t tty0/unifi-controller:latest \
              --platform=linux/arm64,linux/amd64 \
              --build-arg VERSION=6.0.45 .
+
+
+      - name: Build the multi-arch image (6.1.71)
+        if: github.ref == 'refs/heads/master'
+        run: |
+           docker buildx build \
+             --push \
+             -f ./Dockerfile \
+             -t tty0/unifi-controller:6.1.71 \
+             -t tty0/unifi-controller:latest \
+             --platform=linux/arm64,linux/amd64 \
+             --build-arg VERSION=6.1.71 .

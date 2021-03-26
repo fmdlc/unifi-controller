@@ -17,8 +17,8 @@ You need to create your MongoDB cluster before using this image. A few examples 
 
 ## Supported tags and respective Dockerfile links
 
-* [latest](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.45](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
-* [oficial](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.36](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.34](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
+* [latest](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.1.71](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
+* [oficial](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.1.71](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile), [6.0.45](https://github.com/fmdlc/unifi-controller/blob/master/Dockerfile)
 
 ## Environment
 

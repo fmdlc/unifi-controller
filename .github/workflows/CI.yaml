@@ -35,7 +35,7 @@ jobs:
 
       - name: hub.docker.com Login
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Build the multi-arch image (6.2.26)
         if: github.ref == 'refs/heads/master'
